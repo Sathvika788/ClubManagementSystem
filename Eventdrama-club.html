@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Drama Event Student Registration</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      background: linear-gradient(to right, #e0eafc, #cfdef3);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      padding: 20px;
+    }
+
+    .container {
+      background: #ffffff;
+      padding: 40px;
+      border-radius: 15px;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      width: 100%;
+      max-width: 650px;
+      animation: fadeIn 0.6s ease-in-out;
+    }
+
+    @keyframes fadeIn {
+      from {
+        transform: translateY(20px);
+        opacity: 0;
+      }
+      to {
+        transform: translateY(0);
+        opacity: 1;
+      }
+    }
+
+    h1 {
+      text-align: center;
+      color: #333;
+      margin-bottom: 30px;
+      font-size: 2rem;
+    }
+
+    .form-group {
+      margin-bottom: 20px;
+      position: relative;
+    }
+
+    label {
+      font-weight: 600;
+      color: #444;
+      margin-bottom: 6px;
+      display: block;
+      font-size: 15px;
+    }
+
+    input[type='text'],
+    input[type='email'],
+    input[type='tel'],
+    input[type='number'],
+    select {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.8px solid #ccc;
+      border-radius: 8px;
+      background: #fdfdfd;
+      font-size: 16px;
+      transition: all 0.3s ease;
+    }
+
+    input:focus,
+    select:focus {
+      border-color: #007acc;
+      background-color: #ffffff;
+      outline: none;
+      box-shadow: 0 0 0 2px rgba(0, 122, 204, 0.2);
+    }
+
+    .button {
+      width: 100%;
+      padding: 15px;
+      background-color: #007acc;
+      color: #fff;
+      font-weight: bold;
+      border: none;
+      border-radius: 10px;
+      font-size: 17px;
+      cursor: pointer;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .button:hover {
+      background-color: #005f99;
+      transform: translateY(-2px);
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Drama Event Student Registration</h1>
+    <form id="student-event-registration-form">
+      <div class="form-group">
+        <label for="eventSelect">Select Event</label>
+        <select id="eventSelect" name="eventSelect" required>
+          
+        </select>
+      </div>
+
+      <div class="form-group">
+        <label for="studentName">Your Full Name</label>
+        <input type="text" id="studentName" name="studentName" required placeholder="Enter your full name" />
+      </div>
+
+      <div class="form-group">
+        <label for="studentEmail">Your Email</label>
+        <input type="email" id="studentEmail" name="studentEmail" required placeholder="Enter your email" />
+      </div>
+
+      <div class="form-group">
+        <label for="studentMobile">Your Mobile Number</label>
+        <input type="tel" id="studentMobile" name="studentMobile" required placeholder="Enter your mobile number" />
+      </div>
+
+      <div class="form-group">
+        <label for="studentId">Student ID</label>
+        <input type="text" id="studentId" name="studentId" required placeholder="Enter your student ID" />
+      </div>
+
+      <button type="submit" class="button">Register for Event</button>
+    </form>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const token = localStorage.getItem("token");
+      const eventSelect = document.getElementById("eventSelect");
+      const form = document.getElementById("student-event-registration-form");
+
+      if (!token) {
+        alert("Please log in to register for events.");
+        return;
+      }
+
+      async function fetchAndPopulateEvents() {
+        try {
+          const response = await fetch("http://localhost:5000/events/coding", {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+          });
+
+          const events = await response.json();
+
+          eventSelect.innerHTML = ""; // Clear existing options
+
+          if (!Array.isArray(events) || events.length === 0) {
+            const noOption = document.createElement("option");
+            noOption.textContent = "No coding events available";
+            noOption.disabled = true;
+            eventSelect.appendChild(noOption);
+            eventSelect.disabled = true;
+            return;
+          }
+
+          const defaultOption = document.createElement("option");
+          defaultOption.value = "";
+          defaultOption.textContent = "-- Please select an event --";
+          eventSelect.appendChild(defaultOption);
+
+          events.forEach(event => {
+            const option = document.createElement("option");
+            option.value = event.eventId;
+            option.textContent = `${event.eventName} - ${new Date(event.eventDate).toLocaleDateString()} at ${event.eventTime}`;
+            eventSelect.appendChild(option);
+          });
+        } catch (error) {
+          console.error("Error fetching events:", error);
+          eventSelect.innerHTML = "<option>Error loading events</option>";
+        }
+      }
+
+      await fetchAndPopulateEvents();
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const selectedEventId = eventSelect.value;
+        const studentName = document.getElementById("studentName").value.trim();
+        const studentEmail = document.getElementById("studentEmail").value.trim();
+        const studentMobile = document.getElementById("studentMobile").value.trim();
+        const studentId = document.getElementById("studentId").value.trim();
+
+        if (!selectedEventId) {
+          alert("Please select an event.");
+          return;
+        }
+
+        const payload = {
+          eventId: selectedEventId,
+          studentName,
+          studentEmail,
+          studentMobile,
+          studentId,
+        };
+
+        try {
+          const response = await fetch("http://localhost:5000/registerStudentForCodingEvent", {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              "Authorization": `Bearer ${token}`
+            },
+            body: JSON.stringify(payload),
+          });
+
+          if (response.ok) {
+            alert("Successfully registered!");
+            form.reset();
+          } else {
+            const err = await response.json();
+            alert("Error: " + (err.message || "Registration failed"));
+          }
+        } catch (err) {
+          alert("Network error: " + err.message);
+        }
+      });
+    });
+  </script>
+</body>
+</html>

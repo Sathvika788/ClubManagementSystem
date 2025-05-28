@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>coding Club</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Poppins', sans-serif;
+      background-color: #f0f4f4;
+      color: #263238;
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      overflow-x: hidden;
+    }
+
+    header {
+      background: #007acc;
+      color: #ffffff;
+      padding: 1.5rem 1rem 1rem;
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      position: relative;
+    }
+    .header-content {
+  display: flex;
+  align-items: center;
+  position: relative;
+  padding: 0 1rem;
+}
+
+.header-title {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.dropdown {
+  margin-left: auto;
+}
+
+
+    .dropbtn {
+      background: #96dee9;
+      color: #fff;
+      padding: 0.5rem 1rem;
+      font-size: 1rem;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: 0.3s ease;
+      position: center;
+    }
+
+    .dropbtn:hover {
+      background: #67678b;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      min-width: 180px;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
+      z-index: 2;
+      border-radius: 8px;
+      overflow: hidden;
+      right: 0;
+    }
+
+    .dropdown-content a,
+    .dropdown-content button {
+      color: #333;
+      padding: 12px 16px;
+      text-decoration: none;
+      display: block;
+      font-size: 1rem;
+      background: none;
+      border: none;
+      width: 100%;
+      text-align: center;
+    }
+
+    .dropdown-content a:hover,
+    .dropdown-content button:hover {
+      background-color: #f5f5f5;
+    }
+
+    .dropdown:hover .dropdown-content {
+      display: block;
+    }
+
+    nav {
+      background-color: #007acc;
+      display: flex;
+      justify-content: center;
+      gap: 1.5rem;
+      padding: 1rem;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      flex-wrap: wrap;
+    }
+
+    nav a {
+      color: #ffffff;
+      text-decoration: none;
+      font-weight: bold;
+      font-size: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 5px;
+      transition: background-color 0.3s ease, color 0.3s ease;
+    }
+
+    nav a:hover {
+      background-color: #005f99;
+      color: #ffeb3b;
+    }
+
+    main {
+      flex: 1;
+      padding: 2rem;
+      background: #ffffff;
+      border-radius: 10px;
+      margin: 2rem;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      transition: transform 0.3s ease;
+    }
+
+    main:hover {
+      transform: scale(1.02);
+    }
+
+    h2 {
+      color: #007acc;
+      margin-bottom: 1rem;
+      font-size: 2rem;
+      font-weight: 600;
+      text-align: center;
+    }
+
+    p {
+      font-size: 1.1rem;
+      line-height: 1.8;
+      color: #455a64;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    footer {
+      background-color: #007acc;
+      color: #ffffff;
+      text-align: center;
+      padding: 1rem;
+      font-size: 1rem;
+    }
+
+    @media (max-width: 768px) {
+      .header-content {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 1rem;
+      }
+
+      nav {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      main {
+        margin: 1rem;
+        padding: 1.5rem;
+      }
+    }
+    .club-image {
+  width: 300px; /* Adjust as needed */
+  height: auto; /* Maintains aspect ratio */
+  margin-top: 1rem;
+}
+.button {
+  display: inline-block;
+  background-color: #a9d2ed;
+  color: #ffffff;
+  padding: 0.75rem 1.5rem;
+  font-size: 1rem;
+  font-weight: bold;
+  text-decoration: none;
+  border-radius: 8px;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.button:hover {
+  background-color: #005f99;
+  transform: scale(1.05);
+}
+
+
+  </style>
+</head>
+<body>
+<header>
+  <div class="header-content">
+    <h1 class="header-title">coding-club</h1>
+    <div class="dropdown">
+      <button class="dropbtn">Profile</button>
+      <div class="dropdown-content">
+        <a href="#" id="account-name">Account Name</a>
+        <a href="#" id="user-id">User ID</a>
+        <a href="./Submissions.html">Registration</a>
+        <button onclick="logout()">Logout</button>
+      </div>
+    </div>
+  </div>
+
+  <nav>
+    <a href="userhome.html">Home</a>
+    <a href="coding-club.html">Coding Club</a>
+    <a href="spoorthi-club.html">Spoorthi Club</a>
+    <a href="Kruthi-club.html">Kruthi Club</a>
+    <a href="Prakruthi-club.html">Prakruthi Club</a>
+    <a href="drama-club.html">Drama Club</a>
+  </nav>
+</header>
+
+
+<main>
+    <section class="hero">
+    <center><img class="club-image" src ="https://ourcodingclub.github.io/assets/img/logos/logo_hex.svg" alt="ClubSphere Banner"></center>
+ 
+  </section>
+  <br>
+  <h2>Upcoming Events</h2>
+  
+  <div class="event">
+    <h3><center>Hackathon 2025</center></h3>
+    <p>Date: June 10, 2025</p>
+    <p>Eligibility: All registered users</p>
+  </div>
+  <div style="text-align: center; margin-top: 1.5rem;">
+  <a href="/Eventcoding-club.html" class="button">Register</a>
+</div>
+
+</main>
+
+<footer>
+  <p>&copy; 2025 coding Club</p>
+</footer>
+
+</body>
+</html>

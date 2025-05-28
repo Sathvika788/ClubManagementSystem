@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>ClubSphere - Explore Your Campus Clubs</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background-color: #f0f8ff;
+      color: #333;
+    }
+
+    .navbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 15px 30px;
+      background-color: #004d99;
+      color: #fff;
+    }
+
+    .navbar h1 {
+      margin: 0;
+      font-size: 26px;
+      letter-spacing: 1px;
+    }
+
+    .auth-buttons a {
+      color: white;
+      text-decoration: none;
+      margin-left: 15px;
+      padding: 8px 16px;
+      background-color: #007acc;
+      border-radius: 20px;
+      font-weight: bold;
+      transition: background-color 0.3s;
+    }
+
+    .auth-buttons a:hover {
+      background-color: #005f99;
+    }
+
+    .hero {
+      text-align: center;
+      padding: 60px 20px 30px;
+      background: linear-gradient(to bottom right, #d0eaff, #e6f2ff);
+    }
+
+    .hero img {
+      width: 90%;
+      max-width: 600px;
+      margin: 20px auto;
+      border-radius: 12px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    }
+
+    .hero h1 {
+      font-size: 42px;
+      color: #003366;
+    }
+
+    .hero p {
+      font-size: 18px;
+      color: #333;
+      max-width: 700px;
+      margin: 0 auto 20px;
+    }
+
+    .clubs-section {
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+
+    .club {
+      background-color: #ffffff;
+      border-left: 5px solid #007acc;
+      margin-bottom: 25px;
+      padding: 20px;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+    }
+
+    .club h2 {
+      margin-top: 0;
+      color: #004d80;
+    }
+
+    .club p {
+      margin: 10px 0;
+      line-height: 1.6;
+    }
+
+    footer {
+      text-align: center;
+      padding: 20px;
+      background-color: #004d99;
+      color: white;
+    }
+
+    footer a {
+      color: #bbdefb;
+      text-decoration: none;
+    }
+
+    footer a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+
+<body>
+  <header class="navbar">
+    <h1>ClubSphere</h1>
+    <div class="auth-buttons">
+      <a href="/Login">Login</a>
+      <a href="/Signup">Signup</a>
+    </div>
+  </header>
+
+  <section class="hero">
+    <img src="https://cmsv2-assets.apptegy.net/uploads/21129/file/2752294/8bc479b6-e465-4b92-b97f-d0491052538e.png" alt="ClubSphere Banner">
+    <h1>Welcome to ClubSphere</h1>
+    <p>Unleash your creativity, explore your interests, and make your college life more vibrant. Join, manage, and participate in events across all your favorite clubs!</p>
+  </section>
+
+  <section class="clubs-section">
+    <div class="club">
+      <h2>Spoorthi - The Literacy Club</h2>
+      <p><strong>Mission:</strong> Encourage expression through debates, writing, and oratory events. Cultivate language and leadership skills.</p>
+      <p><strong>Events:</strong> Essay Writing, Debate, Storytelling, Extempore.</p>
+      <p><strong>Eligibility:</strong> Open to all students interested in language, literature, and communication.</p>
+    </div>
+
+    <div class="club">
+      <h2>Prakruthi - Environmental Club</h2>
+      <p><strong>Mission:</strong> Promote sustainability and environmental awareness. Empower students to lead eco-friendly initiatives.</p>
+      <p><strong>Events:</strong> Tree Planting, Clean-up Drives, Recycling Campaigns, Environmental Talks.</p>
+      <p><strong>Eligibility:</strong> Open to students who are passionate about nature and ecology.</p>
+    </div>
+
+    <div class="club">
+      <h2>Kruthi - Fine Arts Club</h2>
+      <p><strong>Mission:</strong> Provide a creative outlet for artistic minds and showcase talents in visual and performing arts.</p>
+      <p><strong>Events:</strong> Art Exhibitions, Poster Making, Craft Workshops, Face Painting.</p>
+      <p><strong>Eligibility:</strong> Open to students interested in creativity, design, and fine arts.</p>
+    </div>
+
+    <div class="club">
+      <h2>Technocrats - Coding & Robotics Club</h2>
+      <p><strong>Mission:</strong> Encourage innovation and problem-solving through coding, robotics, and tech competitions.</p>
+      <p><strong>Events:</strong> Hackathons, Coding Challenges, Robotics Demos.</p>
+      <p><strong>Eligibility:</strong> Open to all tech enthusiasts and engineering minds.</p>
+    </div>
+
+    <div class="club">
+      <h2>Rangmanch - Drama & Theatre Club</h2>
+      <p><strong>Mission:</strong> Promote performing arts and provide a platform for theatrical talent and expression.</p>
+      <p><strong>Events:</strong> Skits, Street Plays, Mime Shows, Acting Workshops.</p>
+      <p><strong>Eligibility:</strong> Open to students with a flair for performance and storytelling.</p>
+    </div>
+  </section>
+
+  <footer>
+    <p>&copy; 2025 ClubSphere. All rights reserved.</p>
+  </footer>
+</body>
+</html>

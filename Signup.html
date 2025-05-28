@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>User Sign Up Page</title>
+    <link href='https://unpkg.com/boxicons@2.1.4/css/boxicons.min.css' rel='stylesheet'>
+    <style>
+        /* Your existing CSS */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #1e3c72, #2a5298);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            color: #fff;
+        }
+
+        header {
+            width: 100%;
+            background-color: rgba(165, 244, 241, 0.4);
+            padding: 15px 0;
+            position: fixed;
+            top: 0;
+            left: 0;
+            text-align: center;
+            color: #fff;
+            z-index: 999;
+            box-shadow: 0 4px 10px rgba(177, 246, 240, 0.2);
+        }
+
+        header h1 {
+            margin: 0;
+            font-size: 26px;
+        }
+
+        .signup-container {
+            width: 100%;
+            max-width: 420px;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, 0.6);
+            text-align: center;
+            transition: .3s ease;
+            margin-top: 100px;
+            color: #333;
+        }
+
+        .signup-container:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 50px rgba(141, 236, 234, 0.7);
+        }
+
+        h2 {
+            margin-bottom: 30px;
+            color: #94f3eb;
+            font-size: 30px;
+            font-weight: 600;
+        }
+
+        .input-box {
+            margin-bottom: 20px;
+            position: relative;
+        }
+
+        .input-box input {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 8px;
+            outline: none;
+            background-color: #f1f5f9;
+            color: #333;
+            transition: all 0.3s ease;
+        }
+
+        .input-box input:focus {
+            border-color: #a7e8f4;
+            background-color: #fff;
+            box-shadow: 0 0 10px rgba(167, 243, 242, 0.3);
+        }
+
+        .input-box label {
+            position: absolute;
+            top: 50%;
+            left: 15px;
+            font-size: 16px;
+            color: #999;
+            pointer-events: none;
+            transform: translateY(-50%);
+            transition: 0.3s;
+        }
+
+        .input-box input:focus + label,
+        .input-box input:valid + label {
+            top: -10px;
+            font-size: 12px;
+            color: #8d9fe1;
+        }
+
+        button {
+            width: 100%;
+            padding: 15px;
+            background: #5e96ef;
+            color: #fff;
+            font-size: 16px;
+            font-weight: bold;
+            border: none;
+            border-radius: 8px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+            box-shadow: 0 4px 15px rgba(170, 244, 239, 0.2);
+        }
+
+        button:hover {
+            background: #9fdfe5;
+            box-shadow: 0 8px 20px hsla(181, 65%, 71%, 0.3);
+        }
+
+        .login-link {
+            margin-top: 20px;
+            font-size: 14px;
+            color: #666;
+        }
+
+        .login-link a {
+            color: #9cf6e5;
+            text-decoration: none;
+            font-weight: 500;
+        }
+
+        .login-link a:hover {
+            text-decoration: underline;
+        }
+
+        @media (max-width: 480px) {
+            .signup-container {
+                padding: 25px;
+                margin-top: 80px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>ClubSphere</h1>
+    </header>
+
+    <div class="signup-container">
+        <h2 id="form-title">User Sign Up</h2> <form id="signuppost">
+            <div class="input-box">
+                <input type="text" id="name" name="name" required />
+                <label for="name">Name</label>
+            </div>
+
+            <div class="input-box">
+                <input type="email" id="email" name="email" required />
+                <label for="email">Email</label>
+            </div>
+
+            <div class="input-box">
+                <input type="password" id="password" name="password" required />
+                <label for="password">Password</label>
+            </div>
+
+            <div class="input-box">
+                <input type="tel" id="mobile" name="mobile" required />
+                <label for="mobile">Mobile Number</label>
+            </div>
+
+            <button type="submit">Sign Up</button>
+
+            <div class="login-link">
+                <p>Existing user? <a href="/Login">Login!</a></p>
+                <p>Back to <a href="/">Home</a></p>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        const form = document.getElementById('signuppost');
+        // Removed modeSelect, clubBox, title, and their related event listeners
+
+        // Initial setup on page load (ensure 'name' is required)
+        document.addEventListener('DOMContentLoaded', () => {
+            document.getElementById('name').setAttribute('required', 'required');
+        });
+
+        form.addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Mode is now always 'user', URL is always '/signup'
+            const url = '/signup'; 
+
+            const email = e.target.email.value;
+            const password = e.target.password.value;
+            const mobile = e.target.mobile.value;
+            const username = e.target.name.value; // Always get username for user signup
+
+            const payload = { username, email, password, mobile }; // Payload is always for user
+
+            // --- IMPORTANT: Console logs for debugging ---
+            console.log('--- Signup Request Details ---');
+            console.log('Mode: user (fixed)'); // Explicitly state it's user mode
+            console.log('Target URL:', url);
+            console.log('Payload (excluding password for security):', { ...payload, password: '***' });
+            console.log('----------------------------');
+            // --- End of console logs ---
+
+            try {
+                const response = await fetch(url, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload),
+                });
+
+                // Handle non-OK responses (e.g., 400, 409, 500)
+                if (!response.ok) {
+                    const errorResponseText = await response.text();
+                    console.error('Server responded with non-OK status:', response.status, errorResponseText);
+                    try {
+                        const errorData = JSON.parse(errorResponseText);
+                        alert(errorData.message || 'Signup failed with an unknown error.');
+                    } catch (jsonParseError) {
+                        alert(`Signup failed. Server sent a non-JSON response. Details: ${errorResponseText.substring(0, 100)}... (Check console for full response)`);
+                    }
+                    return; // Stop execution if response is not OK
+                }
+
+                // If response.ok is true, it should be JSON
+                const data = await response.json();
+
+                alert(data.message || 'Sign up successful!');
+                window.location.href = '/Login'; // Redirect to login page on success
+
+            } catch (error) {
+                console.error("Error during signup fetch:", error);
+                alert('An unexpected error occurred during signup. Please check your network connection and try again.');
+            }
+        });
+    </script>
+</body>
+</html>
