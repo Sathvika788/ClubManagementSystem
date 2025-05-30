@@ -17,8 +17,8 @@ const SECRET_KEY = 'jwt_secret_key_54742384238423_ahfgrdtTFHHYJNMP[]yigfgfjdfjd=
 // will automatically pick up credentials. For local testing, set environment variables.
 AWS.config.update({
     region: 'us-east-1',
-    // accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Use environment variables or IAM roles
-    // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Use environment variables or IAM roles
+    accessKeyId: 'AKIARC5P65QCTXPFJGOE', // Use environment variables or IAM roles
+    secretAccessKey: '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', // Use environment variables or IAM roles
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
