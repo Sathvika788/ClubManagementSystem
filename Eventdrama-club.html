@@ -214,7 +214,7 @@
         };
 
         try {
-          const response = await fetch("http://localhost:5000/registerStudentForCodingEvent", {
+          const response = await fetch(" ${window.location.protocol}//${window.location.hostname}:5000/registerStudentForCodingEvent", {
             method: "POST",
             headers: {
               "Content-Type": "application/json",
