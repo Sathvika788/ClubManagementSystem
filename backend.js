@@ -1,6 +1,6 @@
 const express = require('express');
 const AWS = require('aws-sdk');
-const bodyParser = require('body-parser'); // Still used, but express.json/urlencoded are preferred for new apps
+const bodyParser = require('body-parser'); 
 const cors = require('cors');
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
@@ -38,7 +38,7 @@ app.use(cors()); // Enable CORS for all origins
 // Place these before bodyParser.json() if you are using both, or remove bodyParser if not needed.
 app.use(express.json()); // Parse JSON request bodies
 app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
-app.use(bodyParser.json()); // Keep if other parts of your app explicitly rely on it, otherwise consider removing.
+// Removed bodyParser.json() as express.json() handles it, unless other parts of your app specifically require it.
 
 
 // Serve static files from the 'static' directory
@@ -91,9 +91,9 @@ app.get('/PrakruthiEventRegistration', (req, res) => res.sendFile(path.join(__di
 app.get('/SpoorthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'SpoorthiEventRegistration.html')));
 
 
-// =====================
-// User Signup Route
-// =====================
+// ---
+## User Signup Route
+---
 app.post('/signup', async (req, res) => {
     const { email, password, username, mobile } = req.body;
     if (!email || !password || !username || !mobile) {
@@ -164,9 +164,9 @@ app.post('/signup', async (req, res) => {
 });
 
 
-// =====================
-// User Login Route
-// =====================
+---
+## User Login Route
+---
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -207,9 +207,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
-// =====================
-// Token Validation Route
-// =====================
+---
+## Token Validation Route
+---
 app.post('/valid', (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({ message: 'Token missing' });
@@ -230,10 +230,9 @@ app.post('/valid', (req, res) => {
     }
 });
 
-// =====================
-// Event Registration Route (for Admins to POST new events)
-// Requires eventType in the request body (e.g., 'Drama', 'Coding', 'Kruthi', 'Prakruthi', 'Spoorthi')
-// =====================
+---
+## Event Registration Route (for Admins to POST new events)
+---
 app.post('/registerEvent', async (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -286,10 +285,20 @@ app.post('/registerEvent', async (req, res) => {
 // Helper function to fetch events by type
 const fetchEventsByType = async (eventType, token) => {
     if (!token) {
-        // Corrected: Removed redundant 'new' keyword
         throw new Error('Authentication token missing');
     }
-    jwt.verify(token, SECRET_KEY, { algorithms: ['HS512'] }); // Verify token
+    
+    // Validate token first, and if it fails, throw an error to be caught by the calling route
+    try {
+        jwt.verify(token, SECRET_KEY, { algorithms: ['HS512'] });
+    } catch (err) {
+        // Re-throw specific JWT errors to allow calling routes to differentiate
+        if (err instanceof jwt.TokenExpiredError) {
+            throw new Error('Token expired');
+        } else {
+            throw new Error('Invalid token');
+        }
+    }
 
     const params = {
         TableName: EVENTS_TABLE, // Always fetch events from the main EVENTS_TABLE
@@ -399,10 +408,9 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
 };
 
 
-// ===================================
-// GET Routes to fetch Events by Type
-// These still fetch from the main EVENTS_TABLE
-// ===================================
+---
+## GET Routes to fetch Events by Type
+---
 
 app.get('/events/drama', async (req, res) => {
     try {
@@ -412,7 +420,7 @@ app.get('/events/drama', async (req, res) => {
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching drama events:', err);
-        if (err.message === 'Authentication token missing' || err.message === 'Invalid or expired token.') {
+        if (err.message === 'Authentication token missing' || err.message === 'Token expired' || err.message === 'Invalid token') {
             return res.status(401).json({ message: err.message });
         }
         res.status(500).json({ message: 'Server error fetching events: ' + err.message });
@@ -427,7 +435,7 @@ app.get('/events/coding', async (req, res) => {
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching coding events:', err);
-        if (err.message === 'Authentication token missing' || err.message === 'Invalid or expired token.') {
+        if (err.message === 'Authentication token missing' || err.message === 'Token expired' || err.message === 'Invalid token') {
             return res.status(401).json({ message: err.message });
         }
         res.status(500).json({ message: 'Server error fetching events: ' + err.message });
@@ -444,7 +452,7 @@ app.get('/events/kruthi', async (req, res) => {
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching Kruthi events:', err);
-        if (err.message === 'Authentication token missing' || err.message === 'Invalid or expired token.') {
+        if (err.message === 'Authentication token missing' || err.message === 'Token expired' || err.message === 'Invalid token') {
             return res.status(401).json({ message: err.message });
         }
         res.status(500).json({ message: 'Server error fetching events: ' + err.message });
@@ -461,7 +469,7 @@ app.get('/events/prakruthi', async (req, res) => {
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching Prakruthi events:', err);
-        if (err.message === 'Authentication token missing' || err.message === 'Invalid or expired token.') {
+        if (err.message === 'Authentication token missing' || err.message === 'Token expired' || err.message === 'Invalid token') {
             return res.status(401).json({ message: err.message });
         }
         res.status(500).json({ message: 'Server error fetching events: ' + err.message });
@@ -478,17 +486,16 @@ app.get('/events/spoorthi', async (req, res) => {
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching Spoorthi events:', err);
-        if (err.message === 'Authentication token missing' || err.message === 'Invalid or expired token.') {
+        if (err.message === 'Authentication token missing' || err.message === 'Token expired' || err.message === 'Invalid token') {
             return res.status(401).json({ message: err.message });
         }
         res.status(500).json({ message: 'Server error fetching events: ' + err.message });
     }
 });
 
-// ==========================================
-// POST Routes for Student Event Registration
-// Registrations now go to specific club tables
-// ==========================================
+---
+## POST Routes for Student Event Registration
+---
 
 app.post('/registerStudentForDramaEvent', async (req, res) => {
     await registerStudentForEvent(req, res, 'Drama');
@@ -511,9 +518,9 @@ app.post('/registerStudentForSpoorthiEvent', async (req, res) => {
 });
 
 
-// =====================
-// Catch-all 404 handler
-// =====================
+---
+## Catch-all 404 handler
+---
 app.use((req, res, next) => {
     console.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
     res.status(404).json({ message: 'Requested resource not found.' });
