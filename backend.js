@@ -92,7 +92,7 @@ app.get('/SpoorthiEventRegistration', (req, res) => res.sendFile(path.join(__dir
 
 
 // ---
-## User Signup Route
+// User Signup Route
 ---
 app.post('/signup', async (req, res) => {
     const { email, password, username, mobile } = req.body;
