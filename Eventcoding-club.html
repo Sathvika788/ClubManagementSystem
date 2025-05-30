@@ -165,7 +165,7 @@
 
             async function fetchAndPopulateEvents() {
                 try {
-                    const response = await fetch("${window.location.protocol}//${window.location.hostname}:5000/events/coding", {
+                    const response = await fetch(`${window.location.protocol}//${window.location.hostname}:5000/events/coding`, {
                         method: "GET",
                         headers: {
                             "Content-Type": "application/json",
