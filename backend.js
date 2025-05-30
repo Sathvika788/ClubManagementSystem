@@ -164,9 +164,9 @@ app.post('/signup', async (req, res) => {
 });
 
 
----
-## User Login Route
----
+//---
+//## User Login Route
+//---
 app.post('/login', async (req, res) => {
     const { email, password } = req.body;
     if (!email || !password) {
@@ -207,9 +207,9 @@ app.post('/login', async (req, res) => {
     }
 });
 
----
-## Token Validation Route
----
+//---
+//## Token Validation Route
+//---
 app.post('/valid', (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) return res.status(401).json({ message: 'Token missing' });
@@ -230,9 +230,9 @@ app.post('/valid', (req, res) => {
     }
 });
 
----
-## Event Registration Route (for Admins to POST new events)
----
+//---
+//## Event Registration Route (for Admins to POST new events)
+//---
 app.post('/registerEvent', async (req, res) => {
     const authHeader = req.headers.authorization;
     if (!authHeader) {
@@ -408,9 +408,9 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
 };
 
 
----
-## GET Routes to fetch Events by Type
----
+//---
+//## GET Routes to fetch Events by Type
+//---
 
 app.get('/events/drama', async (req, res) => {
     try {
@@ -493,9 +493,9 @@ app.get('/events/spoorthi', async (req, res) => {
     }
 });
 
----
-## POST Routes for Student Event Registration
----
+//---
+//## POST Routes for Student Event Registration
+//---
 
 app.post('/registerStudentForDramaEvent', async (req, res) => {
     await registerStudentForEvent(req, res, 'Drama');
@@ -518,9 +518,9 @@ app.post('/registerStudentForSpoorthiEvent', async (req, res) => {
 });
 
 
----
-## Catch-all 404 handler
----
+//---
+//## Catch-all 404 handler
+//---
 app.use((req, res, next) => {
     console.warn(`404 Not Found: ${req.method} ${req.originalUrl}`);
     res.status(404).json({ message: 'Requested resource not found.' });
