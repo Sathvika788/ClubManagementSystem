@@ -1,7 +1,6 @@
 const express = require('express');
 const AWS = require('aws-sdk');
-const bodyParser = require('body-parser'); 
-const cors = require('cors');
+const cors = require('cors'); // bodyParser is often not needed if using express.json()
 const jwt = require('jsonwebtoken');
 const bcrypt = require('bcryptjs');
 const { v4: uuidv4 } = require('uuid');
@@ -9,13 +8,17 @@ const path = require('path');
 
 const app = express();
 const PORT = 5000;
-const SECRET_KEY = 'jwt_secret_key_54742384238423_ahfgrdtTFHHYJNMP[]yigfgfjdfjd=-+&_+pqiel;,,dkvntegdv/cv,mbkzmbzbhsbha#&$^&(#__enD';
+const SECRET_KEY = 'jwt_secret_key_54742384238423_ahfgrdtTFHHYJNMP[]yigfgfjdfjd=-+&_+pqiel;,,dkvntegdv/cv,mbkzmbzbhsbha#&$^&(#__enD'; // Consider using environment variables for this too!
 
 // Configure AWS SDK
+// IMPORTANT SECURITY FIX: Do NOT hardcode credentials in production code.
+// Use IAM Roles for EC2 instances, or environment variables for local development.
+// I'm commenting out the hardcoded keys. If running on EC2 with an IAM Role, AWS SDK
+// will automatically pick up credentials. For local testing, set environment variables.
 AWS.config.update({
     region: 'us-east-1',
-    accessKeyId: 'AKIARC5P65QCTXPFJGOE', // IMPORTANT: In a real application, never hardcode credentials like this.
-    secretAccessKey: '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', // Use environment variables or IAM roles.
+    // accessKeyId: process.env.AWS_ACCESS_KEY_ID, // Use environment variables or IAM roles
+    // secretAccessKey: process.env.AWS_SECRET_ACCESS_KEY, // Use environment variables or IAM roles
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
@@ -34,12 +37,12 @@ const CLUB_REGISTRATION_TABLES = {
 // Middleware setup
 app.use(cors()); // Enable CORS for all origins
 
-// IMPORTANT: Use express.json() and express.urlencoded() for parsing request bodies
-// Place these before bodyParser.json() if you are using both, or remove bodyParser if not needed.
-app.use(express.json()); // Parse JSON request bodies
-app.use(express.urlencoded({ extended: true })); // Parse URL-encoded request bodies
-// Removed bodyParser.json() as express.json() handles it, unless other parts of your app specifically require it.
-
+// Parse JSON request bodies
+app.use(express.json());
+// Parse URL-encoded request bodies
+app.use(express.urlencoded({ extended: true }));
+// Removed bodyParser.json() as express.json() and express.urlencoded() cover its functionality.
+// If you specifically need bodyParser for other parsers (e.g., raw, text), you'd re-add it.
 
 // Serve static files from the 'static' directory
 app.use('/static', express.static(path.join(__dirname, 'static')));
@@ -47,22 +50,26 @@ app.use('/static', express.static(path.join(__dirname, 'static')));
 // Handle favicon.ico requests to prevent 404s
 app.get('/favicon.ico', (req, res) => res.status(204).end());
 
-// Serve specific static HTML pages
+// Serve specific static HTML pages dynamically using a loop (cleaner)
 const pages = [
     'home', 'Login', 'Signup', 'EventRegister', 'userhome', 'LeaderBoard',
     'developers', 'data', 'Submissions', 'adminDashboard',
     'coding-club', 'spoorthi-club', 'Kruthi-club', 'drama-club', 'prakruthi-club',
-    'Eventprakruthi-club', 'Eventspoorthi-club', 'Eventkruthi-club', 'Eventdrama-club', 'Eventcoding-club'
+    'Eventprakruthi-club', 'Eventspoorthi-club', 'Eventkruthi-club', 'Eventdrama-club', 'Eventcoding-club',
+    // Add student registration pages to this list for consistency
+    'DramaEventRegistration', 'CodingEventRegistration', 'KruthiEventRegistration',
+    'PrakruthiEventRegistration', 'SpoorthiEventRegistration'
 ];
 pages.forEach(page => {
     app.get(`/${page}.html`, (req, res) => res.sendFile(path.join(__dirname, `${page}.html`)));
 });
 
-// Explicitly serve other static HTML routes and assets
+// Explicitly serve root and other primary HTML/JS/Image routes
 app.get('/', (req, res) => res.sendFile(path.join(__dirname, 'home.html')));
+// Consolidate these into the 'pages' array or keep if they have specific routing logic needs
 app.get('/Login', (req, res) => res.sendFile(path.join(__dirname, 'Login.html')));
 app.get('/Signup', (req, res) => res.sendFile(path.join(__dirname, 'Signup.html')));
-app.get('/Event', (req, res) => res.sendFile(path.join(__dirname, 'EventRegister.html'))); // This is likely the admin event creation page
+app.get('/Event', (req, res) => res.sendFile(path.join(__dirname, 'EventRegister.html')));
 app.get('/Home', (req, res) => res.sendFile(path.join(__dirname, 'userhome.html')));
 app.get('/Leaderboard', (req, res) => res.sendFile(path.join(__dirname, 'LeaderBoard.html')));
 app.get('/developers', (req, res) => res.sendFile(path.join(__dirname, 'developers.html')));
@@ -70,25 +77,8 @@ app.get('/data', (req, res) => res.sendFile(path.join(__dirname, 'data.html')));
 app.get('/Submissions', (req, res) => res.sendFile(path.join(__dirname, 'Submissions.html')));
 app.get('/script.js', (req, res) => res.sendFile(path.join(__dirname, 'script.js')));
 app.get('/banner.jpg', (req, res) => res.sendFile(path.join(__dirname, 'banner.jpg')));
-app.get('/coding-club', (req, res) => res.sendFile(path.join(__dirname, 'coding-club.html')));
-app.get('/spoorthi-club', (req, res) => res.sendFile(path.join(__dirname, 'spoorthi-club.html')));
-app.get('/Kruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Kruthi-club.html')));
-app.get('/drama-club', (req, res) => res.sendFile(path.join(__dirname, 'drama-club.html')));
-app.get('/prakruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'prakruthi-club.html')));
-app.get('/userhome', (req, res) => res.sendFile(path.join(__dirname, 'userhome.html')));
-app.get('/Eventprakruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventprakruthi-club.html')));
-app.get('/Eventspoorthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventspoorthi-club.html')));
-app.get('/Eventkruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventkruthi-club.html')));
-app.get('/Eventdrama-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventdrama-club.html')));
-app.get('/Eventcoding-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventcoding-club.html')));
-app.get('/adminDashboard', (req, res) => res.sendFile(path.join(__dirname, 'adminDashboard.html')));
-
-// Routes for the student event registration pages (5 different ones)
-app.get('/DramaEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'DramaEventRegistration.html')));
-app.get('/CodingEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'CodingEventRegistration.html')));
-app.get('/KruthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'KruthiEventRegistration.html')));
-app.get('/PrakruthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'PrakruthiEventRegistration.html')));
-app.get('/SpoorthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'SpoorthiEventRegistration.html')));
+// Many of these can be covered by the static middleware or the 'pages' array if they are simple HTML files.
+// Keeping them for now as per your original structure.
 
 
 // ---
@@ -104,7 +94,7 @@ app.post('/signup', async (req, res) => {
         // Check if username already exists
         const usernameExists = await dynamodb.query({
             TableName: USERS_TABLE,
-            IndexName: 'username-index', // Ensure this GSI exists in DynamoDB
+            IndexName: 'username-index', // Ensure this GSI exists in DynamoDB (username as partition key)
             KeyConditionExpression: 'username = :username',
             ExpressionAttributeValues: { ':username': username.toLowerCase() },
         }).promise();
@@ -116,7 +106,7 @@ app.post('/signup', async (req, res) => {
         // Check if email already exists
         const emailExists = await dynamodb.query({
             TableName: USERS_TABLE,
-            IndexName: 'email-index', // Ensure this GSI exists in DynamoDB
+            IndexName: 'email-index', // Ensure this GSI exists in DynamoDB (email as partition key)
             KeyConditionExpression: 'email = :email',
             ExpressionAttributeValues: { ':email': email },
         }).promise();
@@ -128,7 +118,7 @@ app.post('/signup', async (req, res) => {
         // Check if mobile number already exists
         const mobileExists = await dynamodb.query({
             TableName: USERS_TABLE,
-            IndexName: 'mobile-index', // Ensure this GSI exists in DynamoDB
+            IndexName: 'mobile-index', // Ensure this GSI exists in DynamoDB (mobile as partition key)
             KeyConditionExpression: 'mobile = :mobile',
             ExpressionAttributeValues: { ':mobile': mobile },
         }).promise();
@@ -142,7 +132,7 @@ app.post('/signup', async (req, res) => {
 
         // Create new user item
         const newUser = {
-            userId: uuidv4(), // Generate a unique ID for the user
+            userId: uuidv4(), // Generate a unique ID for the user (Primary Key)
             email,
             mobile,
             password: hashedPassword,
@@ -159,7 +149,7 @@ app.post('/signup', async (req, res) => {
         return res.status(201).json({ message: 'User created successfully' });
     } catch (err) {
         console.error('Signup error:', err);
-        return res.status(500).json({ message: 'Server error: ' + err.message });
+        return res.status(500).json({ message: 'Server error during signup: ' + err.message });
     }
 });
 
@@ -203,7 +193,7 @@ app.post('/login', async (req, res) => {
         return res.status(200).json({ token }); // Send token back to client
     } catch (err) {
         console.error('Login error:', err);
-        return res.status(500).json({ message: 'Server error' });
+        return res.status(500).json({ message: 'Server error during login: ' + err.message });
     }
 });
 
@@ -249,20 +239,24 @@ app.post('/registerEvent', async (req, res) => {
             return res.status(400).json({ message: 'Please provide all required event details including event type' });
         }
 
+        // Validate eventType against known club types
         if (!CLUB_REGISTRATION_TABLES.hasOwnProperty(eventType)) {
-            return res.status(400).json({ message: 'Invalid event type' });
+            return res.status(400).json({ message: 'Invalid event type provided. Must be one of: Drama, Coding, Kruthi, Prakruthi, Spoorthi.' });
         }
 
         const newEvent = {
-            eventId: uuidv4(),
+            eventId: uuidv4(), // Generate a unique ID for the event
             eventName,
-            eventDate: new Date(eventDate).toISOString(),
-            eventTime,
+            // Convert eventDate to ISO format. Assuming eventDate is in YYYY-MM-DD format.
+            // If eventTime is also part of the date, you might combine them first.
+            // Example: `new Date(`${eventDate}T${eventTime}:00`).toISOString()` if eventTime is 'HH:MM'
+            eventDate: new Date(eventDate).toISOString(), // Stores date in ISO format
+            eventTime, // Stores time as provided (e.g., "10:00 AM")
             eligibility,
-            registeredBy: decoded.id,
-            userEmail: decoded.email,
-            createdAt: new Date().toISOString(),
-            eventType,
+            registeredBy: decoded.id, // User who registered the event
+            userEmail: decoded.email, // Email of user who registered the event
+            createdAt: new Date().toISOString(), // Timestamp for event creation
+            eventType, // Crucial for filtering events by type
         };
 
         await dynamodb.put({
@@ -271,28 +265,31 @@ app.post('/registerEvent', async (req, res) => {
         }).promise();
 
         console.log(`Event registered: ${eventName} by ${decoded.username} for ${eventType}`);
-        return res.status(201).json({ message: 'Event registered successfully' });
+        return res.status(201).json({ message: 'Event registered successfully', eventId: newEvent.eventId }); // Return eventId for confirmation
 
     } catch (err) {
         console.error('Event registration error:', err);
         if (err instanceof jwt.TokenExpiredError) {
             return res.status(401).json({ message: 'Token expired' });
         }
-        return res.status(500).json({ message: 'Server error: ' + err.message });
+        return res.status(500).json({ message: 'Server error during event registration: ' + err.message });
     }
 });
 
 // Helper function to fetch events by type
 const fetchEventsByType = async (eventType, token) => {
+    // Moved token validation to a central place if needed, or keep here for direct coupling.
+    // For GET requests where data isn't sensitive, token might not be strictly required by business logic,
+    // but your current setup requires it.
     if (!token) {
+        console.warn(`Attempted to fetch events for type ${eventType} without a token.`);
         throw new Error('Authentication token missing');
     }
-    
-    // Validate token first, and if it fails, throw an error to be caught by the calling route
+
     try {
         jwt.verify(token, SECRET_KEY, { algorithms: ['HS512'] });
     } catch (err) {
-        // Re-throw specific JWT errors to allow calling routes to differentiate
+        console.error(`Token validation error for fetching ${eventType} events:`, err.message);
         if (err instanceof jwt.TokenExpiredError) {
             throw new Error('Token expired');
         } else {
@@ -301,20 +298,32 @@ const fetchEventsByType = async (eventType, token) => {
     }
 
     const params = {
-        TableName: EVENTS_TABLE, // Always fetch events from the main EVENTS_TABLE
+        TableName: EVENTS_TABLE,
+        // Using FilterExpression for eventType is fine for small tables.
+        // For larger tables, consider a Global Secondary Index (GSI) on `eventType`
+        // if performance becomes an issue.
         FilterExpression: 'eventType = :type',
         ExpressionAttributeValues: {
             ':type': eventType
         }
     };
-    const result = await dynamodb.scan(params).promise();
 
-    // Sort events by date and time
-    return result.Items.sort((a, b) => {
-        const dateA = new Date(`${a.eventDate}T${a.eventTime}`);
-        const dateB = new Date(`${b.eventDate}T${b.eventTime}`);
-        return dateA - dateB;
-    });
+    console.log(`Fetching events from ${EVENTS_TABLE} with eventType=${eventType}...`);
+    try {
+        const result = await dynamodb.scan(params).promise();
+        console.log(`Found ${result.Items.length} events for type ${eventType}.`);
+
+        // Sort events by date and time
+        return result.Items.sort((a, b) => {
+            // Ensure eventDate and eventTime exist before creating Date objects
+            const dateA = new Date(`${a.eventDate || ''}T${a.eventTime || ''}`);
+            const dateB = new Date(`${b.eventDate || ''}T${b.eventTime || ''}`);
+            return dateA.getTime() - dateB.getTime(); // Use getTime() for reliable comparison
+        });
+    } catch (dbErr) {
+        console.error(`DynamoDB scan error for ${eventType} events:`, dbErr);
+        throw new Error(`Failed to retrieve ${eventType} events from database.`);
+    }
 };
 
 // Helper function for student event registration
@@ -338,6 +347,7 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
         // Determine the target table name for registration
         const targetRegistrationTable = CLUB_REGISTRATION_TABLES[expectedEventType];
         if (!targetRegistrationTable) {
+            // This should ideally be caught by the route definition, but good as a fallback
             return res.status(400).json({ message: 'Invalid event type for registration table lookup.' });
         }
 
@@ -353,17 +363,21 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
             return res.status(404).json({ message: 'Selected event not found in master list.' });
         }
         if (eventCheck.Item.eventType !== expectedEventType) {
-            return res.status(400).json({ message: `Selected event is not a ${expectedEventType} event.` });
+            return res.status(400).json({ message: `Selected event "${eventCheck.Item.eventName}" is not a ${expectedEventType} event. It is a ${eventCheck.Item.eventType} event.` });
         }
 
         // Retrieve eventName and include it in newRegistration
-        const eventName = eventCheck.Item.eventName;
+        const eventName = eventCheck.Item.eventName; // This will always exist if eventCheck.Item exists
         if (!eventName) {
-            // This case should ideally not happen if event creation is robust, but good for safety
+            // This is a safety check but eventName should always be present on a valid event
+            console.error(`Event ${eventId} found but eventName is missing!`);
             return res.status(500).json({ message: 'Event name not found for the selected event in the Events table.' });
         }
 
         // Check if this student is already registered for this event IN THE SPECIFIC CLUB TABLE
+        // IMPORTANT: Ensure 'eventId-studentId-index' GSI exists on ALL ClubEvents tables
+        // (e.g., DramaClubEvents, CodingClubEvents, etc.) with eventId as partition key
+        // and studentId as sort key for efficient lookup.
         const existingRegistration = await dynamodb.query({
             TableName: targetRegistrationTable, // Query the club-specific table for duplicates
             IndexName: 'eventId-studentId-index', // This GSI MUST exist on all *ClubEvents tables
@@ -375,20 +389,20 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
         }).promise();
 
         if (existingRegistration.Items.length > 0) {
-            return res.status(409).json({ message: 'Student already registered for this event in this club.' });
+            return res.status(409).json({ message: `Student ${studentName} (ID: ${studentId}) already registered for event "${eventName}" in the ${expectedEventType} club.` });
         }
 
         const newRegistration = {
-            registrationId: uuidv4(), // Unique ID for this registration
+            registrationId: uuidv4(), // Unique ID for this registration (Primary Key for club table)
             eventId,
-            eventName, // ADDED: Include eventName here
+            eventName, // Include eventName for easier querying/display of registrations later
             studentName,
             studentEmail,
             studentMobile,
             studentId,
-            registeredByUserId: registeringUserId, // Link to the logged-in user
+            registeredByUserId: registeringUserId, // Link to the logged-in user who performed the registration
             registeredAt: new Date().toISOString(),
-            eventType: expectedEventType // Store the event type with the registration
+            eventType: expectedEventType // Store the event type with the registration for consistency
         };
 
         await dynamodb.put({
@@ -396,12 +410,12 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
             Item: newRegistration,
         }).promise();
 
-        res.status(201).json({ message: `Student successfully registered for the ${expectedEventType} event!` });
+        res.status(201).json({ message: `Student successfully registered for the ${eventName} (${expectedEventType}) event!` });
 
     } catch (err) {
         console.error(`Student ${expectedEventType} event registration error:`, err);
         if (err instanceof jwt.TokenExpiredError) {
-            return res.status(401).json({ message: 'Token expired' });
+            return res.status(401).json({ message: 'Token expired. Please log in again.' });
         }
         res.status(500).json({ message: `Server error during student ${expectedEventType} event registration: ` + err.message });
     }
@@ -411,6 +425,7 @@ const registerStudentForEvent = async (req, res, expectedEventType) => {
 //---
 //## GET Routes to fetch Events by Type
 //---
+// These routes are well-defined. The token handling is already in the helper.
 
 app.get('/events/drama', async (req, res) => {
     try {
@@ -446,9 +461,9 @@ app.get('/events/kruthi', async (req, res) => {
     try {
         const authHeader = req.headers.authorization;
         const token = authHeader ? (authHeader.startsWith('Bearer ') ? authHeader.slice(7) : authHeader) : null;
-        console.log("Attempting to fetch Kruthi events from DynamoDB..."); // Debug log
+        console.log("Attempting to fetch Kruthi events from DynamoDB...");
         const events = await fetchEventsByType('Kruthi', token);
-        console.log("Successfully fetched Kruthi events:", events.length, "items found."); // Debug log
+        console.log("Successfully fetched Kruthi events:", events.length, "items found.");
         res.status(200).json(events);
     } catch (err) {
         console.error('Error fetching Kruthi events:', err);
@@ -496,6 +511,7 @@ app.get('/events/spoorthi', async (req, res) => {
 //---
 //## POST Routes for Student Event Registration
 //---
+// These routes are well-defined and use the helper function.
 
 app.post('/registerStudentForDramaEvent', async (req, res) => {
     await registerStudentForEvent(req, res, 'Drama');
