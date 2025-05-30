@@ -275,7 +275,7 @@
                 try {
                     // CORRECTED: Changed the URL to match the server-side endpoint
                     // CORRECTED: Changed body parameter names to match server-side expectations
-                    const response = await fetch("http://3.91.226.206:5000/registerStudentForCodingEvent", {
+                    const response = await fetch(" ${window.location.protocol}//${window.location.hostname}:5000/registerStudentForCodingEvent", {
                         method: "POST",
                         headers: {
                             "Content-Type": "application/json",
