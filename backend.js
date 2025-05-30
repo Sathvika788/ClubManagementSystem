@@ -70,25 +70,25 @@ app.get('/data', (req, res) => res.sendFile(path.join(__dirname, 'data.html')));
 app.get('/Submissions', (req, res) => res.sendFile(path.join(__dirname, 'Submissions.html')));
 app.get('/script.js', (req, res) => res.sendFile(path.join(__dirname, 'script.js')));
 app.get('/banner.jpg', (req, res) => res.sendFile(path.join(__dirname, 'banner.jpg')));
-app.get('/coding-club.html', (req, res) => res.sendFile(path.join(__dirname, 'coding-club.html')));
-app.get('/spoorthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'spoorthi-club.html')));
-app.get('/Kruthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Kruthi-club.html')));
-app.get('/drama-club.html', (req, res) => res.sendFile(path.join(__dirname, 'drama-club.html')));
-app.get('/prakruthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'prakruthi-club.html')));
-app.get('/userhome.html', (req, res) => res.sendFile(path.join(__dirname, 'userhome.html')));
-app.get('/Eventprakruthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Eventprakruthi-club.html')));
-app.get('/Eventspoorthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Eventspoorthi-club.html')));
-app.get('/Eventkruthi-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Eventkruthi-club.html')));
-app.get('/Eventdrama-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Eventdrama-club.html')));
-app.get('/Eventcoding-club.html', (req, res) => res.sendFile(path.join(__dirname, 'Eventcoding-club.html')));
-app.get('/adminDashboard.html', (req, res) => res.sendFile(path.join(__dirname, 'adminDashboard.html')));
+app.get('/coding-club', (req, res) => res.sendFile(path.join(__dirname, 'coding-club.html')));
+app.get('/spoorthi-club', (req, res) => res.sendFile(path.join(__dirname, 'spoorthi-club.html')));
+app.get('/Kruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Kruthi-club.html')));
+app.get('/drama-club', (req, res) => res.sendFile(path.join(__dirname, 'drama-club.html')));
+app.get('/prakruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'prakruthi-club.html')));
+app.get('/userhome', (req, res) => res.sendFile(path.join(__dirname, 'userhome.html')));
+app.get('/Eventprakruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventprakruthi-club.html')));
+app.get('/Eventspoorthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventspoorthi-club.html')));
+app.get('/Eventkruthi-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventkruthi-club.html')));
+app.get('/Eventdrama-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventdrama-club.html')));
+app.get('/Eventcoding-club', (req, res) => res.sendFile(path.join(__dirname, 'Eventcoding-club.html')));
+app.get('/adminDashboard', (req, res) => res.sendFile(path.join(__dirname, 'adminDashboard.html')));
 
 // Routes for the student event registration pages (5 different ones)
-app.get('/DramaEventRegistration.html', (req, res) => res.sendFile(path.join(__dirname, 'DramaEventRegistration.html')));
-app.get('/CodingEventRegistration.html', (req, res) => res.sendFile(path.join(__dirname, 'CodingEventRegistration.html')));
-app.get('/KruthiEventRegistration.html', (req, res) => res.sendFile(path.join(__dirname, 'KruthiEventRegistration.html')));
-app.get('/PrakruthiEventRegistration.html', (req, res) => res.sendFile(path.join(__dirname, 'PrakruthiEventRegistration.html')));
-app.get('/SpoorthiEventRegistration.html', (req, res) => res.sendFile(path.join(__dirname, 'SpoorthiEventRegistration.html')));
+app.get('/DramaEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'DramaEventRegistration.html')));
+app.get('/CodingEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'CodingEventRegistration.html')));
+app.get('/KruthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'KruthiEventRegistration.html')));
+app.get('/PrakruthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'PrakruthiEventRegistration.html')));
+app.get('/SpoorthiEventRegistration', (req, res) => res.sendFile(path.join(__dirname, 'SpoorthiEventRegistration.html')));
 
 
 // =====================
