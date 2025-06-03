@@ -506,7 +506,6 @@
       <div class="dropdown-content">
         <a href="#" id="account-name">Account Name</a>
         <a href="#" id="user-id">User ID</a>
-        <a href="./Submissions.html">Donations</a>
         <button onclick="logout()">Logout</button>
       </div>
     </div>
@@ -576,7 +575,7 @@
     { id: 3, name: 'Spoorthi Club', eventsCount: 2, description: 'Foster innovation and creativity in various fields.', link: 'spoorthi-club.html' },
   ];
 
-  // Mock data for upcoming events (updated with 'description' for modal details)
+  // Mock data for upcoming events (registeredStudents will be fetched dynamically)
   const upcomingEvents = [
     { id: 101, name: 'React Workshop', club: 'Coding Club', date: '2025-06-15', time: '10:00 AM', location: 'Lab 401', description: 'Learn the basics of React.js and build your first component. This workshop is perfect for beginners and those looking to refresh their skills. Bring your laptop!' },
     { id: 102, name: 'Annual Play Auditions', club: 'Drama Club', date: '2025-06-20', time: '02:00 PM', location: 'Auditorium', description: 'Auditions for the upcoming annual play, "The Midnight Mystery." Prepare a monologue or a short scene. All experience levels welcome!' },
@@ -584,15 +583,50 @@
     { id: 104, name: 'Spoorthi Fest Prep', club: 'Spoorthi Club', date: '2025-06-25', time: '04:00 PM', location: 'Activity Hall', description: 'Meeting to plan and organize the annual Spoorthi cultural festival. We need volunteers for various committees, including logistics, marketing, and event management. Your ideas are welcome!' },
   ];
 
-  // Dummy valid function (replace with your actual authentication logic from script.js)
-  // This function simulates an asynchronous user validation.
+  // --- User Provided Functions ---
+
+  async function logout(){
+    localStorage.removeItem('token');
+    window.location.href = '/';
+  }
+
   async function valid() {
-    return new Promise(resolve => {
-      setTimeout(() => {
-        // Returns a mock user object after a short delay
-        resolve({ username: 'John Doe', userId: 'user1234567890' });
-      }, 50);
+    const token = localStorage.getItem('token');
+    if (!token) {
+        console.log('No token');
+        showModal('Session Expired', '<p>Your session has expired. Please log in again.</p>', '<button class="confirm-button" onclick="window.location.href = \'/Login\'">Login</button>');
+        return;
+    }
+
+    try {
+        const response = await fetch('/valid', {
+            method: 'POST',
+            headers: { 'authorization': token },
+        });
+
+        if (!response.ok) {
+            console.log('Session expired. Please log in again');
+            showModal('Session Expired', '<p>Your session has expired. Please log in again.</p>', '<button class="confirm-button" onclick="window.location.href = \'/Login\'">Login</button>');
+            return;
+        }
+
+        const data = await response.json();
+        return data;
+    } catch (error) {
+        console.error('Error validating session:', error);
+        showModal('Error', '<p>An error occurred. Please log in again.</p>', '<button class="confirm-button" onclick="window.location.href = \'/Login\'">Login</button>');
+    }
+  }
+
+  async function downloadFile(file) {
+    const response = await fetch('getFile?file=' + file, {
+        method: 'GET',
     });
+    if(response.ok) {
+        const blob = await response.blob();
+        const url = URL.createObjectURL(blob);
+        window.open(url, '_blank');
+    }
   }
 
   // --- Modal Functions ---
@@ -611,8 +645,7 @@
     modalTitle.innerHTML = title;
     modalBody.innerHTML = bodyContent;
     modalFooter.innerHTML = footerButtonsHTML;
-    genericModal.style.display = 'flex'; // Make the overlay visible and use flex for centering
-    // Add 'show' class after a slight delay to trigger CSS transition/animation
+    genericModal.style.display = 'flex';
     setTimeout(() => genericModal.classList.add('show'), 10);
   }
 
@@ -620,65 +653,86 @@
    * Hides the currently displayed modal.
    */
   function hideModal() {
-    genericModal.classList.remove('show'); // Remove 'show' class to trigger fade-out animation
-    // Hide the modal completely after the animation duration
+    genericModal.classList.remove('show');
     setTimeout(() => {
       genericModal.style.display = 'none';
-      // Clear modal content to reset for next use
       modalTitle.innerHTML = '';
       modalBody.innerHTML = '';
       modalFooter.innerHTML = '';
-    }, 300); // Matches the CSS transition duration
+    }, 300);
   }
 
   /**
    * Initiates the logout process by showing a confirmation modal.
-   * Replaces the previous alert() call.
    */
-  function logout() {
+  function confirmLogout() { // Renamed to avoid conflict with user's logout function
     const title = 'Confirm Logout';
     const body = '<p>Are you sure you want to log out of ClubSphere?</p>';
     const footer = `
       <button class="cancel-button" onclick="hideModal()">Cancel</button>
-      <button class="confirm-button" onclick="performLogout()">Logout</button>
+      <button class="confirm-button" onclick="logout()">Logout</button>
     `;
     showModal(title, body, footer);
   }
 
+  // IMPORTANT: The original logout() function provided by the user is now directly called
+  // by the "Logout" button in the modal footer.
+  // The 'performLogout' dummy function is no longer needed as the actual logout logic is in the user's logout() function.
+
+
   /**
-   * Executes the actual logout logic after user confirmation.
-   * In a real application, this would clear session/token and redirect.
+   * Simulates fetching registered students from a database.
+   * In a real application, this would be an actual API call.
+   * @param {number} eventId - The ID of the event to fetch data for.
+   * @returns {Promise<number>} A promise that resolves with the number of registered students.
    */
-  function performLogout() {
-    console.log('User logged out.');
-    hideModal(); // Hide the modal after action
-    // Example: Redirect to login page (uncomment in a live app)
-    // window.location.href = '/login.html';
+  async function fetchRegisteredStudents(eventId) {
+    // Simulate a network delay
+    return new Promise(resolve => {
+      setTimeout(() => {
+        // Simulate fetching a random number of registered students for demonstration
+        const minStudents = 10;
+        const maxStudents = 100;
+        const registeredCount = Math.floor(Math.random() * (maxStudents - minStudents + 1)) + minStudents;
+        resolve(registeredCount);
+      }, 700); // Simulate 700ms network latency
+    });
   }
 
   /**
-   * Displays the details of a specific event in the modal.
+   * Displays the details of a specific event in the modal, fetching registered students.
    * @param {number} eventId - The ID of the event to display.
    */
-  function showEventDetails(eventId) {
+  async function showEventDetails(eventId) {
     const event = upcomingEvents.find(e => e.id === eventId);
     if (!event) {
       console.error('Event not found:', eventId);
-      // Optionally show an error modal here
       showModal('Error', '<p>Event details could not be loaded.</p>', '<button class="confirm-button" onclick="hideModal()">Close</button>');
       return;
     }
 
     const title = `Event Details: ${event.name}`;
-    const body = `
+    // Initial modal body with loading message for registered students
+    let body = `
       <p><strong>Club:</strong> ${event.club}</p>
       <p><strong>Date:</strong> ${event.date}</p>
       <p><strong>Time:</strong> ${event.time}</p>
       <p><strong>Location:</strong> ${event.location}</p>
       <p><strong>Description:</strong> ${event.description}</p>
+      <p id="registered-students-info"><strong>Registered Students:</strong> Loading...</p>
     `;
     const footer = `<button class="confirm-button" onclick="hideModal()">Close</button>`;
+
     showModal(title, body, footer);
+
+    try {
+      const registeredStudents = await fetchRegisteredStudents(eventId);
+      // Update only the registered students info after fetching
+      document.getElementById('registered-students-info').innerHTML = `<strong>Registered Students:</strong> ${registeredStudents}`;
+    } catch (error) {
+      console.error('Error fetching registered students:', error);
+      document.getElementById('registered-students-info').innerHTML = `<strong>Registered Students:</strong> N/A (Error loading)`;
+    }
   }
 
   /**
@@ -686,7 +740,7 @@
    */
   function renderClubCards() {
     const container = document.getElementById('joined-clubs-list');
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = '';
     if (joinedClubs.length > 0) {
       joinedClubs.forEach(club => {
         const clubCard = `
@@ -702,7 +756,6 @@
         container.insertAdjacentHTML('beforeend', clubCard);
       });
     } else {
-      // Display message if no clubs are joined
       container.innerHTML = '<p class="text-center text-gray-600" id="no-joined-clubs-message">You haven\'t joined any clubs yet. Explore above!</p>';
     }
   }
@@ -712,7 +765,7 @@
    */
   function renderEventCards() {
     const container = document.getElementById('upcoming-events-list');
-    container.innerHTML = ''; // Clear existing content
+    container.innerHTML = '';
     if (upcomingEvents.length > 0) {
       upcomingEvents.forEach(event => {
         const eventCard = `
@@ -727,22 +780,19 @@
         container.insertAdjacentHTML('beforeend', eventCard);
       });
     } else {
-      // Display message if no upcoming events
       container.innerHTML = '<p class="text-center text-gray-600" id="no-upcoming-events-message">No upcoming events at the moment.</p>';
     }
   }
 
   // Event listener for DOM content loaded to initialize the dashboard
   document.addEventListener('DOMContentLoaded', async () => {
-    // Authenticate user and update profile information
-    const user = await valid();
+    const user = await valid(); // Calls the user-provided valid function
     if (user) {
       document.getElementById('account-name').innerText = user.username;
       // Display first 6 characters of userId for brevity, or full userId if preferred
       document.getElementById('user-id').innerText = user.userId.substring(0, 6);
     }
 
-    // Render the dynamic sections of the dashboard
     renderClubCards();
     renderEventCards();
   });
