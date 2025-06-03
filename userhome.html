@@ -4,8 +4,9 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>ClubSphere Home</title>
-  <script src="/script.js"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet">
   <style>
+    /* Basic Reset & Body Styles */
     * {
       margin: 0;
       padding: 0;
@@ -13,44 +14,46 @@
     }
 
     body {
-      font-family: 'Poppins', sans-serif;
-      background-color: #f0f4f4;
-      color: #263238;
+      font-family: 'Poppins', sans-serif; /* Using Poppins font */
+      background-color: #f0f4f4; /* Light grey background */
+      color: #263238; /* Dark grey text */
       display: flex;
       flex-direction: column;
       min-height: 100vh;
-      overflow-x: hidden;
+      overflow-x: hidden; /* Prevent horizontal scroll */
     }
 
+    /* Header Styling */
     header {
-      background: #007acc;
-      color: #ffffff;
+      background: #007acc; /* Blue header background */
+      color: #ffffff; /* White text */
       padding: 1.5rem 1rem 1rem;
-      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+      box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15); /* Soft shadow */
       position: relative;
     }
     .header-content {
-  display: flex;
-  align-items: center;
-  position: relative;
-  padding: 0 1rem;
-}
+      display: flex;
+      align-items: center;
+      position: relative;
+      padding: 0 1rem;
+    }
 
-.header-title {
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-  font-size: 2.5rem;
-  font-weight: bold;
-}
+    .header-title {
+      position: absolute;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 2.5rem;
+      font-weight: bold;
+      white-space: nowrap; /* Prevent wrapping on smaller screens */
+    }
 
-.dropdown {
-  margin-left: auto;
-}
-
+    .dropdown {
+      margin-left: auto; /* Pushes dropdown to the right */
+      position: relative; /* Ensure dropdown content positions relative to this */
+    }
 
     .dropbtn {
-      background: #96dee9;
+      background: #96dee9; /* Light blue button */
       color: #fff;
       padding: 0.5rem 1rem;
       font-size: 1rem;
@@ -58,28 +61,29 @@
       border-radius: 8px;
       cursor: pointer;
       transition: 0.3s ease;
-      position: center;
     }
 
     .dropbtn:hover {
-      background: #67678b;
+      background: #67678b; /* Darker blue on hover */
     }
 
     .dropdown-content {
-      display: none;
+      display: none; /* Hidden by default */
       position: absolute;
       background-color: #fff;
       min-width: 180px;
-      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2);
-      z-index: 2;
+      box-shadow: 0 6px 16px rgba(0, 0, 0, 0.2); /* Dropdown shadow */
+      z-index: 2; /* Ensure it's above other content */
       border-radius: 8px;
       overflow: hidden;
-      right: 0;
+      right: 0; /* Align to the right of the dropdown button */
+      top: 100%; /* Position below the button */
+      margin-top: 5px; /* Small gap below button */
     }
 
     .dropdown-content a,
     .dropdown-content button {
-      color: #333;
+      color: #333; /* Dark text for dropdown items */
       padding: 12px 16px;
       text-decoration: none;
       display: block;
@@ -88,25 +92,27 @@
       border: none;
       width: 100%;
       text-align: center;
+      cursor: pointer;
     }
 
     .dropdown-content a:hover,
     .dropdown-content button:hover {
-      background-color: #f5f5f5;
+      background-color: #f5f5f5; /* Light grey on hover */
     }
 
     .dropdown:hover .dropdown-content {
-      display: block;
+      display: block; /* Show dropdown on hover */
     }
 
+    /* Navigation Styling */
     nav {
-      background-color: #007acc;
+      background-color: #007acc; /* Same as header */
       display: flex;
       justify-content: center;
       gap: 1.5rem;
       padding: 1rem;
-      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
-      flex-wrap: wrap;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1); /* Nav shadow */
+      flex-wrap: wrap; /* Allow navigation items to wrap */
     }
 
     nav a {
@@ -120,22 +126,23 @@
     }
 
     nav a:hover {
-      background-color: #005f99;
-      color: #ffeb3b;
+      background-color: #005f99; /* Darker blue on hover */
+      color: #ffeb3b; /* Yellow text on hover */
     }
 
+    /* Main Content Area */
     main {
-      flex: 1;
+      flex: 1; /* Takes up remaining vertical space */
       padding: 2rem;
-      background: #ffffff;
+      background: #ffffff; /* White background for main content */
       border-radius: 10px;
       margin: 2rem;
-      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1);
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.1); /* Main content shadow */
       transition: transform 0.3s ease;
     }
 
     main:hover {
-      transform: scale(1.02);
+      transform: scale(1.02); /* Slight scale on hover */
     }
 
     h2 {
@@ -154,19 +161,191 @@
       text-align: center;
     }
 
+    /* Hero Section Specifics */
+    .hero {
+      margin-bottom: 2rem;
+    }
+
+    .hero img {
+      max-width: 100%;
+      height: auto;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      margin-bottom: 1.5rem;
+    }
+
+    .hero h1 {
+      font-size: 2.5rem;
+      color: #007acc;
+      margin-bottom: 1rem;
+    }
+
+    /* New Dashboard Sections Styling */
+    .dashboard-sections {
+      display: grid;
+      grid-template-columns: 1fr; /* Single column by default */
+      gap: 2rem; /* Space between sections */
+      margin-top: 3rem;
+    }
+
+    @media (min-width: 768px) {
+      .dashboard-sections {
+        grid-template-columns: repeat(2, 1fr); /* Two columns on larger screens */
+      }
+    }
+
+    .section-card {
+      background-color: #f8fbfb; /* Light background for sections */
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+      border: 1px solid #e0e0e0;
+    }
+
+    .section-card h3 {
+      font-size: 1.8rem;
+      font-weight: 600;
+      margin-bottom: 1.5rem;
+      text-align: center;
+    }
+
+    /* Club Card Styling */
+    .club-card {
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: 1px solid #b3e0ff; /* Light blue border */
+      margin-bottom: 1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .club-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .club-card h4 {
+      font-size: 1.3rem;
+      color: #005f99;
+      margin-bottom: 0.5rem;
+    }
+
+    .club-card p {
+      font-size: 0.95rem;
+      color: #546e7a;
+      margin-bottom: 1rem;
+      text-align: left; /* Override main p alignment */
+    }
+
+    .club-card-footer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.9rem;
+      color: #78909c;
+    }
+
+    /* Styling for the new 'View Club' link */
+    .club-view-button {
+      background-color: #007acc;
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      text-decoration: none; /* Remove underline for link */
+      transition: background-color 0.3s ease;
+      display: inline-block; /* Allows padding and margin */
+    }
+
+    .club-view-button:hover {
+      background-color: #005f99;
+    }
+
+    /* Event Card Styling */
+    .event-card {
+      background-color: #ffffff;
+      padding: 1rem;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+      border: 1px solid #c8e6c9; /* Light green border */
+      margin-bottom: 1rem;
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .event-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .event-card h4 {
+      font-size: 1.3rem;
+      color: #2e7d32; /* Darker green for event titles */
+      margin-bottom: 0.5rem;
+    }
+
+    .event-card p {
+      font-size: 0.95rem;
+      color: #546e7a;
+      margin-bottom: 1rem;
+      text-align: left; /* Override main p alignment */
+    }
+
+    .event-card button {
+      background-color: #4caf50; /* Green button */
+      color: #ffffff;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      transition: background-color 0.3s ease;
+    }
+
+    .event-card button:hover {
+      background-color: #388e3c; /* Darker green on hover */
+    }
+
+    /* Footer Styling */
     footer {
       background-color: #007acc;
       color: #ffffff;
       text-align: center;
       padding: 1rem;
       font-size: 1rem;
+      margin-top: auto; /* Pushes footer to the bottom */
     }
 
+    /* Responsive Adjustments */
     @media (max-width: 768px) {
       .header-content {
         flex-direction: column;
         align-items: flex-start;
         gap: 1rem;
+      }
+
+      .header-title {
+        position: static; /* Remove absolute positioning on small screens */
+        transform: none;
+        text-align: center;
+        width: 100%;
+        font-size: 2rem;
+      }
+
+      .dropdown {
+        margin-left: 0;
+        width: 100%;
+        text-align: center;
+      }
+      .dropbtn {
+        width: 100%;
+      }
+      .dropdown-content {
+        position: static; /* Make dropdown content flow naturally */
+        width: 100%;
+        box-shadow: none;
+        border-radius: 0;
+        margin-top: 0;
       }
 
       nav {
@@ -178,6 +357,143 @@
         margin: 1rem;
         padding: 1.5rem;
       }
+
+      h2 {
+        font-size: 1.8rem;
+      }
+
+      .hero h1 {
+        font-size: 2rem;
+      }
+
+      p {
+        font-size: 1rem;
+      }
+    }
+
+    /* Modal Styles */
+    .modal-overlay {
+      display: none; /* Hidden by default */
+      position: fixed; /* Stay in place */
+      z-index: 1000; /* Sit on top */
+      left: 0;
+      top: 0;
+      width: 100%; /* Full width */
+      height: 100%; /* Full height */
+      overflow: auto; /* Enable scroll if needed */
+      background-color: rgba(0,0,0,0.6); /* Black w/ opacity */
+      backdrop-filter: blur(5px); /* Blur effect */
+      -webkit-backdrop-filter: blur(5px); /* Safari support */
+      justify-content: center; /* Center horizontally */
+      align-items: center; /* Center vertically */
+      opacity: 0; /* Start invisible for animation */
+      transition: opacity 0.3s ease-out; /* Fade in effect */
+    }
+
+    .modal-overlay.show {
+      display: flex; /* Show when 'show' class is added */
+      opacity: 1; /* Fade in */
+    }
+
+    .modal-content {
+      background-color: #fefefe;
+      margin: auto; /* Centered */
+      padding: 2.5rem;
+      border-radius: 12px;
+      box-shadow: 0 8px 30px rgba(0,0,0,0.25); /* Stronger shadow for modal */
+      position: relative;
+      width: 90%; /* Responsive width */
+      max-width: 500px; /* Max width */
+      transform: scale(0.95); /* Start slightly smaller for pop-in effect */
+      transition: transform 0.3s ease-out; /* Pop-in effect */
+    }
+
+    .modal-overlay.show .modal-content {
+      transform: scale(1); /* Scale to full size */
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid #eee; /* Separator line */
+      padding-bottom: 1rem;
+      margin-bottom: 1.5rem;
+    }
+
+    .modal-header h4 {
+      font-size: 1.8rem;
+      color: #007acc;
+      margin: 0;
+    }
+
+    .close-button {
+      color: #aaa;
+      font-size: 2.2rem;
+      font-weight: bold;
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      line-height: 1;
+      transition: color 0.3s ease;
+    }
+
+    .close-button:hover,
+    .close-button:focus {
+      color: #333;
+      text-decoration: none;
+      outline: none;
+    }
+
+    .modal-body p {
+      text-align: left; /* Ensure text is left-aligned within modal */
+      margin-bottom: 1rem;
+      color: #455a64;
+      font-size: 1.05rem;
+    }
+
+    .modal-body p strong {
+      color: #263238;
+    }
+
+    .modal-footer {
+      display: flex;
+      justify-content: flex-end; /* Align buttons to the right */
+      padding-top: 1.5rem;
+      border-top: 1px solid #eee; /* Separator line */
+      margin-top: 1.5rem;
+      gap: 1rem; /* Space between buttons */
+    }
+
+    .modal-footer button {
+      padding: 0.75rem 1.5rem;
+      border-radius: 8px;
+      border: none;
+      cursor: pointer;
+      font-size: 1rem;
+      font-weight: 600;
+      transition: background-color 0.3s ease, transform 0.2s ease;
+    }
+
+    .modal-footer .confirm-button {
+      background-color: #007acc;
+      color: white;
+    }
+
+    .modal-footer .confirm-button:hover {
+      background-color: #005f99;
+      transform: translateY(-2px);
+    }
+
+    .modal-footer .cancel-button {
+      background-color: #e0e0e0;
+      color: #333;
+    }
+
+    .modal-footer .cancel-button:hover {
+      background-color: #c0c0c0;
+      transform: translateY(-2px);
     }
   </style>
 </head>
@@ -206,32 +522,231 @@
   </nav>
 </header>
 
-  <main>
-    <h2>Explore Your Interests!</h2>
-    <center>
-      <section class="hero">
-        <img src="https://cmsv2-assets.apptegy.net/uploads/21129/file/2752294/8bc479b6-e465-4b92-b97f-d0491052538e.png" alt="ClubSphere Banner">
-        <h1>Welcome to ClubSphere</h1>
-      </section>
-    </center>
-    <p>Unleash your creativity, explore your interests, and make your college life more vibrant. Join, manage, and participate in events across all your favorite clubs!</p>
-    <p>This platform allows you to register for club activities, view upcoming events, and stay connected with your favorite clubs.</p>
-    <p>Click on any club in the navigation bar to explore more.</p>
-  </main>
+<main>
+  <h2>Explore Your Interests!</h2>
+  <center>
+    <section class="hero">
+      <img src="https://cmsv2-assets.apptegy.net/uploads/21129/file/2752294/8bc479b6-e465-4b92-b97f-d0491052538e.png" alt="ClubSphere Banner">
+      <h1>Welcome to ClubSphere</h1>
+    </section>
+  </center>
+  <p>Unleash your creativity, explore your interests, and make your college life more vibrant. Join, manage, and participate in events across all your favorite clubs!</p>
+  <p>This platform allows you to register for club activities, view upcoming events, and stay connected with your favorite clubs.</p>
+  <p>Click on any club in the navigation bar to explore more.</p>
 
-  <footer>
-    <p>&copy; 2025 Club Management System | All Rights Reserved</p>
-  </footer>
+  <div class="dashboard-sections">
+    <section class="section-card">
+      <h3 style="color: #007acc;">My Joined Clubs</h3>
+      <div id="joined-clubs-list" class="space-y-4">
+        <p class="text-center text-gray-600" id="no-joined-clubs-message">You haven't joined any clubs yet. Explore above!</p>
+      </div>
+    </section>
 
-  <script>
-    document.addEventListener('DOMContentLoaded', async () => {
-      const user = await valid();
-      if (user) {
-        document.getElementById('account-name').innerText = user.username;
-        document.getElementById('user-id').innerText = user.userId.substring(0, 6);
-      }
+    <section class="section-card">
+      <h3 style="color: #4caf50;">Upcoming Events</h3>
+      <div id="upcoming-events-list" class="space-y-4">
+        <p class="text-center text-gray-600" id="no-upcoming-events-message">No upcoming events at the moment.</p>
+      </div>
+    </section>
+  </div>
+</main>
+
+<footer>
+  <p>&copy; 2025 Club Management System | All Rights Reserved</p>
+</footer>
+
+<div id="genericModal" class="modal-overlay">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h4 id="modalTitle"></h4>
+      <button class="close-button" onclick="hideModal()">&times;</button>
+    </div>
+    <div class="modal-body" id="modalBody">
+      </div>
+    <div class="modal-footer" id="modalFooter">
+      </div>
+  </div>
+</div>
+
+<script>
+  // Mock data for joined clubs (updated with 'link' property for navigation)
+  const joinedClubs = [
+    { id: 1, name: 'Coding Club', eventsCount: 3, description: 'Dive into the world of programming and development.', link: 'coding-club.html' },
+    { id: 2, name: 'Drama Club', eventsCount: 1, description: 'Express yourself through acting and stage performances.', link: 'drama-club.html' },
+    { id: 3, name: 'Spoorthi Club', eventsCount: 2, description: 'Foster innovation and creativity in various fields.', link: 'spoorthi-club.html' },
+  ];
+
+  // Mock data for upcoming events (updated with 'description' for modal details)
+  const upcomingEvents = [
+    { id: 101, name: 'React Workshop', club: 'Coding Club', date: '2025-06-15', time: '10:00 AM', location: 'Lab 401', description: 'Learn the basics of React.js and build your first component. This workshop is perfect for beginners and those looking to refresh their skills. Bring your laptop!' },
+    { id: 102, name: 'Annual Play Auditions', club: 'Drama Club', date: '2025-06-20', time: '02:00 PM', location: 'Auditorium', description: 'Auditions for the upcoming annual play, "The Midnight Mystery." Prepare a monologue or a short scene. All experience levels welcome!' },
+    { id: 103, name: 'AI Hackathon', club: 'Coding Club', date: '2025-07-01', time: '09:00 AM', location: 'Innovation Hub', description: 'A 24-hour hackathon focused on Artificial Intelligence and Machine Learning. Form teams and build innovative solutions to real-world problems. Prizes for top teams!' },
+    { id: 104, name: 'Spoorthi Fest Prep', club: 'Spoorthi Club', date: '2025-06-25', time: '04:00 PM', location: 'Activity Hall', description: 'Meeting to plan and organize the annual Spoorthi cultural festival. We need volunteers for various committees, including logistics, marketing, and event management. Your ideas are welcome!' },
+  ];
+
+  // Dummy valid function (replace with your actual authentication logic from script.js)
+  // This function simulates an asynchronous user validation.
+  async function valid() {
+    return new Promise(resolve => {
+      setTimeout(() => {
+        // Returns a mock user object after a short delay
+        resolve({ username: 'John Doe', userId: 'user1234567890' });
+      }, 50);
     });
-  </script>
+  }
+
+  // --- Modal Functions ---
+  const genericModal = document.getElementById('genericModal');
+  const modalTitle = document.getElementById('modalTitle');
+  const modalBody = document.getElementById('modalBody');
+  const modalFooter = document.getElementById('modalFooter');
+
+  /**
+   * Displays a generic modal with custom title, body content, and optional footer buttons.
+   * @param {string} title - The title of the modal.
+   * @param {string} bodyContent - The HTML string for the modal's body.
+   * @param {string} [footerButtonsHTML=''] - Optional HTML string for buttons in the modal's footer.
+   */
+  function showModal(title, bodyContent, footerButtonsHTML = '') {
+    modalTitle.innerHTML = title;
+    modalBody.innerHTML = bodyContent;
+    modalFooter.innerHTML = footerButtonsHTML;
+    genericModal.style.display = 'flex'; // Make the overlay visible and use flex for centering
+    // Add 'show' class after a slight delay to trigger CSS transition/animation
+    setTimeout(() => genericModal.classList.add('show'), 10);
+  }
+
+  /**
+   * Hides the currently displayed modal.
+   */
+  function hideModal() {
+    genericModal.classList.remove('show'); // Remove 'show' class to trigger fade-out animation
+    // Hide the modal completely after the animation duration
+    setTimeout(() => {
+      genericModal.style.display = 'none';
+      // Clear modal content to reset for next use
+      modalTitle.innerHTML = '';
+      modalBody.innerHTML = '';
+      modalFooter.innerHTML = '';
+    }, 300); // Matches the CSS transition duration
+  }
+
+  /**
+   * Initiates the logout process by showing a confirmation modal.
+   * Replaces the previous alert() call.
+   */
+  function logout() {
+    const title = 'Confirm Logout';
+    const body = '<p>Are you sure you want to log out of ClubSphere?</p>';
+    const footer = `
+      <button class="cancel-button" onclick="hideModal()">Cancel</button>
+      <button class="confirm-button" onclick="performLogout()">Logout</button>
+    `;
+    showModal(title, body, footer);
+  }
+
+  /**
+   * Executes the actual logout logic after user confirmation.
+   * In a real application, this would clear session/token and redirect.
+   */
+  function performLogout() {
+    console.log('User logged out.');
+    hideModal(); // Hide the modal after action
+    // Example: Redirect to login page (uncomment in a live app)
+    // window.location.href = '/login.html';
+  }
+
+  /**
+   * Displays the details of a specific event in the modal.
+   * @param {number} eventId - The ID of the event to display.
+   */
+  function showEventDetails(eventId) {
+    const event = upcomingEvents.find(e => e.id === eventId);
+    if (!event) {
+      console.error('Event not found:', eventId);
+      // Optionally show an error modal here
+      showModal('Error', '<p>Event details could not be loaded.</p>', '<button class="confirm-button" onclick="hideModal()">Close</button>');
+      return;
+    }
+
+    const title = `Event Details: ${event.name}`;
+    const body = `
+      <p><strong>Club:</strong> ${event.club}</p>
+      <p><strong>Date:</strong> ${event.date}</p>
+      <p><strong>Time:</strong> ${event.time}</p>
+      <p><strong>Location:</strong> ${event.location}</p>
+      <p><strong>Description:</strong> ${event.description}</p>
+    `;
+    const footer = `<button class="confirm-button" onclick="hideModal()">Close</button>`;
+    showModal(title, body, footer);
+  }
+
+  /**
+   * Renders the "My Joined Clubs" section by injecting club cards into the DOM.
+   */
+  function renderClubCards() {
+    const container = document.getElementById('joined-clubs-list');
+    container.innerHTML = ''; // Clear existing content
+    if (joinedClubs.length > 0) {
+      joinedClubs.forEach(club => {
+        const clubCard = `
+          <div class="club-card">
+            <h4>${club.name}</h4>
+            <p>${club.description}</p>
+            <div class="club-card-footer">
+              <span>Upcoming Events: <b>${club.eventsCount}</b></span>
+              <a href="${club.link}" class="club-view-button">View Club</a>
+            </div>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', clubCard);
+      });
+    } else {
+      // Display message if no clubs are joined
+      container.innerHTML = '<p class="text-center text-gray-600" id="no-joined-clubs-message">You haven\'t joined any clubs yet. Explore above!</p>';
+    }
+  }
+
+  /**
+   * Renders the "Upcoming Events" section by injecting event cards into the DOM.
+   */
+  function renderEventCards() {
+    const container = document.getElementById('upcoming-events-list');
+    container.innerHTML = ''; // Clear existing content
+    if (upcomingEvents.length > 0) {
+      upcomingEvents.forEach(event => {
+        const eventCard = `
+          <div class="event-card">
+            <h4>${event.name}</h4>
+            <p>
+              <b>${event.club}</b> | ${event.date} at ${event.time} | ${event.location}
+            </p>
+            <button onclick="showEventDetails(${event.id})">View Details</button>
+          </div>
+        `;
+        container.insertAdjacentHTML('beforeend', eventCard);
+      });
+    } else {
+      // Display message if no upcoming events
+      container.innerHTML = '<p class="text-center text-gray-600" id="no-upcoming-events-message">No upcoming events at the moment.</p>';
+    }
+  }
+
+  // Event listener for DOM content loaded to initialize the dashboard
+  document.addEventListener('DOMContentLoaded', async () => {
+    // Authenticate user and update profile information
+    const user = await valid();
+    if (user) {
+      document.getElementById('account-name').innerText = user.username;
+      // Display first 6 characters of userId for brevity, or full userId if preferred
+      document.getElementById('user-id').innerText = user.userId.substring(0, 6);
+    }
+
+    // Render the dynamic sections of the dashboard
+    renderClubCards();
+    renderEventCards();
+  });
+</script>
 
 </body>
 </html>
