@@ -8,7 +8,7 @@ const path = require('path');
 
 const app = express();
 const PORT = 5000;
-const SECRET_KEY = 'jwt_secret_key_54742384238423_ahfgrdtTFHHYJNMP[]yigfgfjdfjd=-+&_+pqiel;,,dkvntegdv/cv,mbkzmbzbhsbha#&$^&(#__enD'; // Consider using environment variables for this too!
+//const SECRET_KEY = ''; // Consider using environment variables for this too!
 
 // Configure AWS SDK
 // IMPORTANT SECURITY FIX: Do NOT hardcode credentials in production code.
@@ -17,8 +17,8 @@ const SECRET_KEY = 'jwt_secret_key_54742384238423_ahfgrdtTFHHYJNMP[]yigfgfjdfjd=
 // will automatically pick up credentials. For local testing, set environment variables.
 AWS.config.update({
     region: 'us-east-1',
-    accessKeyId: 'AKIARC5P65QCTXPFJGOE', // Use environment variables or IAM roles
-    secretAccessKey: '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', // Use environment variables or IAM roles
+    //accessKeyId: '', // Use environment variables or IAM roles
+    //secretAccessKey: '', // Use environment variables or IAM roles
 });
 
 const dynamodb = new AWS.DynamoDB.DocumentClient();
